@@ -11,6 +11,8 @@ import seaborn as sns
 from scipy.io import loadmat
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
@@ -20,6 +22,27 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.model_selection import learning_curve
 
+# import kagglehub
 
-ig_df = pd.read_csv("instagram_usage_lifestyle.csv")
+# # Download latest version
+# path = kagglehub.dataset_download("sadiajavedd/social-media-user-activity-dataset")
 
+# print("Path to dataset files:", path)
+
+main_df = pd.read_csv("instagram_usage_lifestyle.csv")
+
+df_encoded = main_df.copy()
+for col in main_df.select_dtypes(include='object').columns:
+    df_encoded[col] = LabelEncoder().fit_transform(df_encoded[col])
+
+X = df_encoded.drop('urban_rural', axis=1).values
+y = df_encoded['urban_rural'].values
+
+# print(df)
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# PCA
+pca = PCA(n_components=10)
+X_pca = pca.fit_transform(X_scaled)
