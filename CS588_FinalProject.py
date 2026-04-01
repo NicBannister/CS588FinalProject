@@ -22,6 +22,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.model_selection import learning_curve
 
+# #I don't know how to get the kaggle thing to work...
 # import kagglehub
 
 # # Download latest version
@@ -46,3 +47,14 @@ X_scaled = scaler.fit_transform(X)
 # PCA
 pca = PCA(n_components=10)
 X_pca = pca.fit_transform(X_scaled)
+
+# Correlation Coefficient.
+corr_matrix = df_encoded.corr()
+
+# Data needs to be heavily processed before any algorith can be done.
+plt.figure(figsize=(12, 10))
+sns.heatmap(corr_matrix, annot= True, fmt= ".2f", cmap= "coolwarm", center= 0, square= True, linewidths= 0.5)
+plt.title('Correlation Coefficient Matrix')
+plt.tight_layout()
+plt.savefig('correlation_matrix.png', dpi=150)
+plt.show()
